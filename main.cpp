@@ -31,5 +31,4 @@ void showWordInfo(Word* word){
 }
 int main() {
 addWord();
-    showWordInfo();
 }
