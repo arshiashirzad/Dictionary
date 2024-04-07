@@ -85,10 +85,52 @@ void deleteWord(Word*& head, string word) {
         Synonym* temp = syn;
         syn = syn->next;
         delete temp;
-        cout << "Word and it's synonyms are deleted successfully!"
+        cout << "Word and it's synonyms are deleted successfully!";
+    }
+    delete current;
+}
+void deleteSynonym(Word*& head, string word, string synonym) {
+    Word* current = head;
+
+    // Search for the word in the linked list
+    while (current != nullptr && current->value != word) {
+        current = current->next;
     }
 
-    delete current;
+    // If the word is not found, return
+    if (current == nullptr) {
+        cout << "Word not found in the dictionary." << endl;
+        return;
+    }
+
+    // Search for the synonym in the synonym list of the word
+    Synonym* syn = current->synonym;
+    Synonym* prev = nullptr;
+    while (syn != nullptr && syn->value != synonym) {
+        prev = syn;
+        syn = syn->next;
+    }
+
+    // If the synonym is not found, return
+    if (syn == nullptr) {
+        cout << "Synonym not found for the word." << endl;
+        return;
+    }
+
+    // If the synonym is found, remove it from the synonym list
+    if (prev == nullptr) { // If the synonym to be deleted is the first node
+        current->synonym = syn->next;
+    } else {
+        prev->next = syn->next;
+    }
+
+    // Free memory for the removed synonym node
+    delete syn;
+
+    // If the synonym list becomes empty, remove the word itself
+    if (current->synonym == nullptr) {
+        deleteWord(head, word);
+    }
 }
 int main() {
     Word* head = nullptr;
