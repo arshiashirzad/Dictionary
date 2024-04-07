@@ -1,23 +1,24 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
 struct Synonym {
     string value;
-    Synonym* next;
+    Synonym *next;
 };
 
 struct Word {
     string value;
-    Word* next;
-    Synonym* synonym;
+    Word *next;
+    Synonym *synonym;
 };
 
-void addWord(Word*& head, string word, string synonym) {
-    Synonym* newSynonym = new Synonym;
+void addWord(Word *&head, string word, string synonym) {
+    Synonym *newSynonym = new Synonym;
     newSynonym->value = synonym;
     newSynonym->next = nullptr;
 
-    Word* newWord = new Word;
+    Word *newWord = new Word;
     newWord->value = word;
     newWord->synonym = newSynonym;
 
@@ -27,13 +28,13 @@ void addWord(Word*& head, string word, string synonym) {
         return;
     }
 
-    Word* current = head;
+    Word *current = head;
     while (current->next != nullptr && current->next->value <= word) {
         current = current->next;
     }
 
     if (current->value == word) {
-        Synonym* syn = current->synonym;
+        Synonym *syn = current->synonym;
         while (syn->next != nullptr) {
             syn = syn->next;
         }
@@ -45,18 +46,18 @@ void addWord(Word*& head, string word, string synonym) {
     }
 }
 
-void showWordAndSynonym(Word* head){
-    Word* current = head;
+void showWordAndSynonym(Word *head) {
+    Word *current = head;
     if (current == nullptr) {
         cout << "Word not found in the dictionary." << endl;
         return;
     }
     while (current != nullptr) {
         cout << "Word: " << current->value << endl;
-        cout<< "Synonym: ";
-        Synonym* syn = current->synonym;
+        cout << "Synonym: ";
+        Synonym *syn = current->synonym;
         while (syn != nullptr) {
-            cout << syn->value << " " ;
+            cout << syn->value << " ";
             syn = syn->next;
         }
         cout << endl;
@@ -64,9 +65,9 @@ void showWordAndSynonym(Word* head){
     }
 }
 
-void deleteWord(Word*& head, string word) {
-    Word* current = head;
-    Word* prev = nullptr;
+void deleteWord(Word *&head, string word) {
+    Word *current = head;
+    Word *prev = nullptr;
 
     while (current != nullptr && current->value != word) {
         prev = current;
@@ -84,64 +85,66 @@ void deleteWord(Word*& head, string word) {
         prev->next = current->next;
     }
 
-    Synonym* syn = current->synonym;
+    Synonym *syn = current->synonym;
     while (syn != nullptr) {
-        Synonym* temp = syn;
+        Synonym *temp = syn;
         syn = syn->next;
         delete temp;
         cout << "Word and it's synonyms are deleted successfully!";
     }
     delete current;
 }
-void deleteSynonym(Word*& head, string word, string synonym) {
-    Word* current = head;
 
-    // Search for the word in the linked list
+void deleteSynonym(Word *&head, string word, string synonym) {
+    Word *current = head;
+
     while (current != nullptr && current->value != word) {
         current = current->next;
     }
 
-    // If the word is not found, return
     if (current == nullptr) {
         cout << "Word not found in the dictionary." << endl;
         return;
     }
 
-    // Search for the synonym in the synonym list of the word
-    Synonym* syn = current->synonym;
-    Synonym* prev = nullptr;
+    Synonym *syn = current->synonym;
+    Synonym *prev = nullptr;
     while (syn != nullptr && syn->value != synonym) {
         prev = syn;
         syn = syn->next;
     }
 
-    // If the synonym is not found, return
     if (syn == nullptr) {
         cout << "Synonym not found for the word." << endl;
         return;
     }
 
-    // If the synonym is found, remove it from the synonym list
-    if (prev == nullptr) { // If the synonym to be deleted is the first node
+    if (prev == nullptr) {
         current->synonym = syn->next;
     } else {
         prev->next = syn->next;
     }
 
-    // Free memory for the removed synonym node
     delete syn;
 
-    // If the synonym list becomes empty, remove the word itself
     if (current->synonym == nullptr) {
         deleteWord(head, word);
     }
 }
+
+void *searchWord(Word *head, string word) {
+    Word *current = head;
+    while (current != nullptr) {
+        if (current->value == word) {
+            showWordAndSynonym(current);
+        }
+        current = current->next;
+    }
+    showWordAndSynonym(nullptr);
+}
+
 int main() {
-    Word* head = nullptr;
-    addWord(head, "happy", "joyful");
-    addWord(head, "sad", "unhappy");
-    showWordAndSynonym(head);
-    deleteWord(head,"happy");
-    showWordAndSynonym(head);
+    Word *head = nullptr;
+
     return 0;
 }
