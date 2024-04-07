@@ -47,6 +47,10 @@ void addWord(Word*& head, string word, string synonym) {
 
 void showWordAndSynonym(Word* head){
     Word* current = head;
+    if (current == nullptr) {
+        cout << "Word not found in the dictionary." << endl;
+        return;
+    }
     while (current != nullptr) {
         cout << "Word: " << current->value << endl;
         cout<< "Synonym: ";
