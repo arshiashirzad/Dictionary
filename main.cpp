@@ -13,7 +13,31 @@ struct Word {
     Synonym *synonym;
 };
 
-void addWord(Word *&head,string word,string  synonym) {
+void saveDictionaryToFile(Word *head) {
+    ofstream file("Dictionary.txt");
+    if (file.is_open()) {
+        Word *current = head;
+        while (current != nullptr) {
+            file << current->value << ": ";
+            Synonym *syn = current->synonym;
+            while (syn != nullptr) {
+                file << syn->value;
+                if (syn->next != nullptr) {
+                    file << ",";
+                }
+                syn = syn->next;
+            }
+            file << endl;
+            current = current->next;
+        }
+        file.close();
+        cout << "Dictionary saved to file successfully." << endl;
+    } else {
+        cout << "Unable to open the file." << endl;
+    }
+}
+
+void addWord(Word *&head, string word, string synonym) {
     Synonym *newSynonym = new Synonym;
     newSynonym->value = synonym;
     newSynonym->next = nullptr;
@@ -88,7 +112,7 @@ void deleteWord(Word *&head, string word) {
         syn = syn->next;
         delete temp;
     }
-    cout << "Word and it's synonyms are deleted successfully!"<<endl;
+    cout << "Word and it's synonyms are deleted successfully!" << endl;
     delete current;
 }
 
@@ -121,75 +145,74 @@ void deleteSynonym(Word *&head, string word, string synonym) {
     } else {
         prev->next = syn->next;
     }
-    cout << "Synonym is deleted successfully!"<<endl;
+    cout << "Synonym is deleted successfully!" << endl;
     delete syn;
 }
 
-void *searchWord(Word *head,string word) {
+void *searchWord(Word *head, string word) {
     Word *current = head;
 
     while (current != nullptr) {
         if (current->value == word) {
             cout << "Word: " << current->value;
-            Synonym* syn = current->synonym;
+            Synonym *syn = current->synonym;
             while (syn != nullptr) {
                 cout << "Synonym: " << syn->value << endl;
                 syn = syn->next;
             }
-        }
-        else{
+        } else {
             cout << "Word not found in the dictionary." << endl;
         }
         current = current->next;
     }
 }
-    int main() {
+
+int main() {
     Word *head = nullptr;
-    int cntrl=0;
-    cout<< "welcome to Dictionary"<<endl;
-    while(cntrl!= 7){
-        cout <<"1.Show dictionary"<<endl<<
-               "2.Add new word " << endl <<
-                "3.Delete a word"<< endl<<
-                "4.Delete synonym"<<endl <<
-                "5.Search Word"<<endl<<
-                "6.Save Dictionary to file"<<endl<<
-                "7.Exit"<<endl<<
-                "ENTER HERE:"<<endl;
-        cin>> cntrl;
+    int cntrl = 0;
+    cout << "welcome to Dictionary" << endl;
+    while (cntrl != 7) {
+        cout << "1.Show dictionary" << endl <<
+             "2.Add new word " << endl <<
+             "3.Delete a word" << endl <<
+             "4.Delete synonym" << endl <<
+             "5.Search Word" << endl <<
+             "6.Save Dictionary to file" << endl <<
+             "7.Exit" << endl <<
+             "ENTER HERE:" << endl;
+        cin >> cntrl;
         string word, synonym;
         switch (cntrl) {
             case 1 :
                 showWordAndSynonym(head);
                 break;
             case 2 :
-                cout<< "Enter the word you want to add:"<<endl;
-                cin>> word;
-                cout<< "Enter the synonym you want to add:"<<endl;
-                cin>> synonym;
-                addWord(head,word,synonym);
+                cout << "Enter the word you want to add:" << endl;
+                cin >> word;
+                cout << "Enter the synonym you want to add:" << endl;
+                cin >> synonym;
+                addWord(head, word, synonym);
                 break;
             case 3 :
-                cout<< "Enter the word you want to delete:"<<endl;
-                cin>> word;
-                deleteWord(head,word);
+                cout << "Enter the word you want to delete:" << endl;
+                cin >> word;
+                deleteWord(head, word);
                 break;
             case 4:
-                cout<< "First enter the word:"<<endl;
-                cin>> word;
-                cout<< "Enter the synonym you want to delete:"<<endl;
-                cin>> synonym;
-                deleteSynonym(head,word,synonym);
+                cout << "First enter the word:" << endl;
+                cin >> word;
+                cout << "Enter the synonym you want to delete:" << endl;
+                cin >> synonym;
+                deleteSynonym(head, word, synonym);
                 break;
             case 5:
-                cout<< "Enter the word you want to search:"<<endl;
-                cin>> word;
-                searchWord(head,word);
+                cout << "Enter the word you want to search:" << endl;
+                cin >> word;
+                searchWord(head, word);
                 break;
             case 6:
-                break;
-            case 7:
-                return 0;
+                saveDictionaryToFile(head);
+                cntrl=7;
                 break;
         }
     }
