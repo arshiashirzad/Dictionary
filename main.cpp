@@ -52,7 +52,7 @@ void addWord(Word *&head) {
 void showWordAndSynonym(Word *head) {
     Word *current = head;
     if (current == nullptr) {
-        cout << "Word not found in the dictionary." << endl;
+        cout << "Dictionary is empty." << endl;
         return;
     }
     while (current != nullptr) {
@@ -143,16 +143,18 @@ void *searchWord(Word *head) {
     cin>> word;
     while (current != nullptr) {
         if (current->value == word) {
-            cout << "Word: " << current->value << endl;
+            cout << "Word: " << current->value;
             Synonym* syn = current->synonym;
             while (syn != nullptr) {
                 cout << "Synonym: " << syn->value << endl;
                 syn = syn->next;
             }
         }
+        else{
+            cout << "Word not found in the dictionary." << endl;
+        }
         current = current->next;
     }
-    cout << "Word not found in the dictionary." << endl;
 }
 
 int main() {
