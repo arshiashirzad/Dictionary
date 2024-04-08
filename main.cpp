@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-
+#include <fstream>
+#include <sstream>
 using namespace std;
 struct Synonym {
     string value;
@@ -12,13 +13,8 @@ struct Word {
     Synonym *synonym;
 };
 
-void addWord(Word *&head) {
+void addWord(Word *&head,string word,string  synonym) {
     Synonym *newSynonym = new Synonym;
-    string word, synonym;
-    cout<< "Enter the word you want to add:"<<endl;
-    cin>> word;
-    cout<< "Enter the synonym you want to add:"<<endl;
-    cin>> synonym;
     newSynonym->value = synonym;
     newSynonym->next = nullptr;
     Word *newWord = new Word;
@@ -156,8 +152,7 @@ void *searchWord(Word *head) {
         current = current->next;
     }
 }
-
-int main() {
+    int main() {
     Word *head = nullptr;
     int cntrl=0;
     cout<< "welcome to Dictionary"<<endl;
@@ -176,7 +171,12 @@ int main() {
                 showWordAndSynonym(head);
                 break;
             case 2 :
-                addWord(head);
+                string word, synonym;
+                cout<< "Enter the word you want to add:"<<endl;
+                cin>> word;
+                cout<< "Enter the synonym you want to add:"<<endl;
+                cin>> synonym;
+                addWord(head,word,synonym);
                 break;
             case 3 :
                 deleteWord(head);
