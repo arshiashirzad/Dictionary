@@ -52,7 +52,7 @@ void addWord(Word *&head) {
 void showWordAndSynonym(Word *head) {
     Word *current = head;
     if (current == nullptr) {
-        cout << "Dictionary is empty." << endl;
+        cout << "Dictionary is empty. " << endl;
         return;
     }
     while (current != nullptr) {
