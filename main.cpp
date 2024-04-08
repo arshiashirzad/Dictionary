@@ -12,31 +12,6 @@ struct Word {
     Word *next;
     Synonym *synonym;
 };
-
-void saveDictionary(Word *head) {
-    ofstream file("Dictionary.txt");
-    if (file.is_open()) {
-        Word *current = head;
-        while (current != nullptr) {
-            file << current->value << ": ";
-            Synonym *syn = current->synonym;
-            while (syn != nullptr) {
-                file << syn->value;
-                if (syn->next != nullptr) {
-                    file << ",";
-                }
-                syn = syn->next;
-            }
-            file << endl;
-            current = current->next;
-        }
-        file.close();
-        cout << "Dictionary saved to file successfully." << endl;
-    } else {
-        cout << "Unable to open the file." << endl;
-    }
-}
-
 void addWord(Word *&head, string word, string synonym) {
     Synonym *newSynonym = new Synonym;
     newSynonym->value = synonym;
@@ -167,8 +142,60 @@ void *searchWord(Word *head, string word) {
     }
 }
 
+Word* readDictionary() {
+    ifstream file("Dictionary.txt");
+    Word* head = nullptr;
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string word;
+            getline(ss, word, ':');
+            Word* newWord = new Word;
+            newWord->value = word;
+            newWord->synonym = nullptr;
+            newWord->next = nullptr;
+            string synonyms;
+            getline(ss, synonyms);
+            stringstream synStream(synonyms);
+            string synonym;
+            while (getline(synStream, synonym, ',')) {
+                addWord(head, word, synonym);
+            }
+        }
+        file.close();
+        cout << "Dictionary loaded from file successfully." << endl;
+    } else {
+        cout << "Unable to open the file." << endl;
+    }
+    return head;
+}
+void saveDictionary(Word *head) {
+    ofstream file("Dictionary.txt");
+    if (file.is_open()) {
+        Word *current = head;
+        while (current != nullptr) {
+            file << current->value << ": ";
+            Synonym *syn = current->synonym;
+            while (syn != nullptr) {
+                file << syn->value;
+                if (syn->next != nullptr) {
+                    file << ",";
+                }
+                syn = syn->next;
+            }
+            file << endl;
+            current = current->next;
+        }
+        file.close();
+        cout << "Dictionary saved to file successfully." << endl;
+    } else {
+        cout << "Unable to open the file." << endl;
+    }
+}
+
 int main() {
-    Word *head = nullptr;
+    Word *head = readDictionary();
     int cntrl = 0;
     cout << "welcome to Dictionary" << endl;
     while (cntrl != 7) {
