@@ -13,7 +13,7 @@ struct Word {
     Synonym *synonym;
 };
 
-void saveDictionaryToFile(Word *head) {
+void saveDictionary(Word *head) {
     ofstream file("Dictionary.txt");
     if (file.is_open()) {
         Word *current = head;
@@ -211,7 +211,7 @@ int main() {
                 searchWord(head, word);
                 break;
             case 6:
-                saveDictionaryToFile(head);
+                saveDictionary(head);
                 cntrl=7;
                 break;
         }
