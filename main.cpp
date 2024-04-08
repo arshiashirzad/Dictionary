@@ -63,12 +63,9 @@ void showWordAndSynonym(Word *head) {
     }
 }
 
-void deleteWord(Word *&head) {
+void deleteWord(Word *&head, string word) {
     Word *current = head;
     Word *prev = nullptr;
-    string word;
-    cout<< "Enter the word you want to delete:"<<endl;
-    cin>> word;
     while (current != nullptr && current->value != word) {
         prev = current;
         current = current->next;
@@ -95,13 +92,9 @@ void deleteWord(Word *&head) {
     delete current;
 }
 
-void deleteSynonym(Word *&head) {
+void deleteSynonym(Word *&head, string word, string synonym) {
     Word *current = head;
-    string word, synonym;
-    cout<< "First enter the word:"<<endl;
-    cin>> word;
-    cout<< "Enter the synonym you want to delete:"<<endl;
-    cin>> synonym;
+
     while (current != nullptr && current->value != word) {
         current = current->next;
     }
@@ -132,11 +125,9 @@ void deleteSynonym(Word *&head) {
     delete syn;
 }
 
-void *searchWord(Word *head) {
+void *searchWord(Word *head,string word) {
     Word *current = head;
-    string word;
-    cout<< "Enter the word you want to search:"<<endl;
-    cin>> word;
+
     while (current != nullptr) {
         if (current->value == word) {
             cout << "Word: " << current->value;
@@ -166,12 +157,12 @@ void *searchWord(Word *head) {
                 "7.Exit"<<endl<<
                 "ENTER HERE:"<<endl;
         cin>> cntrl;
+        string word, synonym;
         switch (cntrl) {
             case 1 :
                 showWordAndSynonym(head);
                 break;
             case 2 :
-                string word, synonym;
                 cout<< "Enter the word you want to add:"<<endl;
                 cin>> word;
                 cout<< "Enter the synonym you want to add:"<<endl;
@@ -179,16 +170,23 @@ void *searchWord(Word *head) {
                 addWord(head,word,synonym);
                 break;
             case 3 :
-                deleteWord(head);
+                cout<< "Enter the word you want to delete:"<<endl;
+                cin>> word;
+                deleteWord(head,word);
                 break;
             case 4:
-                deleteSynonym(head);
+                cout<< "First enter the word:"<<endl;
+                cin>> word;
+                cout<< "Enter the synonym you want to delete:"<<endl;
+                cin>> synonym;
+                deleteSynonym(head,word,synonym);
                 break;
             case 5:
-                searchWord(head);
+                cout<< "Enter the word you want to search:"<<endl;
+                cin>> word;
+                searchWord(head,word);
                 break;
             case 6:
-                deleteSynonym(head);
                 break;
             case 7:
                 return 0;
