@@ -51,10 +51,10 @@ void showWordAndSynonym(Word *head) {
         return;
     }
     while (current != nullptr) {
-        cout << "Word: " << current->value;
+        cout << "Word: " << current->value<<"->";
         Synonym *syn = current->synonym;
         while (syn != nullptr) {
-            cout << syn->value << "";
+            cout << syn->value << " ";
             syn = syn->next;
         }
         cout << endl;
@@ -129,12 +129,13 @@ void *searchWord(Word *head, string word) {
 
     while (current != nullptr) {
         if (current->value == word) {
-            cout << "Word: " << current->value;
+            cout << "Word: " << current->value<< "->";
             Synonym *syn = current->synonym;
             while (syn != nullptr) {
-                cout << "Synonym: " << syn->value << endl;
+                cout << " " << syn->value ;
                 syn = syn->next;
             }
+            cout<< endl;
         } else {
             cout << "Word not found in the dictionary." << endl;
         }
